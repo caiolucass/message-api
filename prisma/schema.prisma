@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+//config do banco de dados
+datasource db {
+  provider = "sqlite"
+  url = "file:./dev.db"
+}
+
+//tabela de usuarios
+model User {
+  id String @id @default(uuid())
+  name String
+  github_id Int
+  avatar_url String
+  login String
+
+//nome da tabela
+  @@map("users")
+  messages Message[]
+}
+
+//tabela de mensagens
+model Message {
+  id String @id @default(uuid())
+  text String
+  created_at DateTime @default(now())
+
+//Many To One
+  user User @relation(fields: [user_id], references: [id])
+
+//nome da tabela
+  @@map("messages")
+  user_id String
+}
